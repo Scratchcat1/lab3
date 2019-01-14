@@ -18,28 +18,42 @@ import Prelude hiding ( Monoid(..), elem, maximum, intersperse, transpose
 -- Recursive and higher-order functions
 
 elem :: Eq a => a -> [a] -> Bool
-elem = undefined
+-- elem n = foldr (\v b -> v == n || b) False
+elem n x = not (null (filter (\y -> y == n) x))
 
 maximum :: Ord a => [a] -> a
-maximum = undefined
+-- maximum (x:xs) = case length xs of 
+--     0 -> x
+--     _ -> if maximum xs > x then maximum xs else x
+maximum = foldr1 (\x y -> if x > y then x else y)
 
 intersperse :: a -> [a] -> [a]
-intersperse = undefined
+intersperse sep (x:xs) = case length xs of
+    0 -> [x]
+    _ -> [x] ++ [sep] ++ intersperse sep xs
+intersperse sep emptyString = emptyString
 
 any :: (a -> Bool) -> [a] -> Bool
-any = undefined
+any fn list = not (null (filter fn list))
+-- use any where fn = \x -> x == n for elem using any 
 
 all :: (a -> Bool) -> [a] -> Bool
-all = undefined
+all fn list = not (any (\val -> not (fn val)) list)
 
 flip :: (a -> b -> c) -> b -> a -> c
-flip = undefined
+flip fn x y = fn y x
 
 takeWhile :: (a -> Bool) -> [a] -> [a]
-takeWhile = undefined
+takeWhile fn [] = []
+takeWhile fn (x:xs) = 
+    if fn x then
+        x : takeWhile fn xs
+    else
+        []
 
 zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
-zipWith = undefined
+zipWith fn (x:xs) (y:ys) = fn x y : zipWith fn xs ys
+zipWith fn _ _ = []
 
 groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
 groupBy = undefined
