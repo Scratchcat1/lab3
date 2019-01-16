@@ -75,8 +75,11 @@ subsequences [] = [[]]
 subsequences (x:xs) = subsequences xs ++ [x:ys | ys <- subsequences xs]
 
 permutations :: Eq a => [a] -> [[a]]
-permutations [x] = [[x]]
-permutations (x:xs) = foldr (\p -> [let (a,b) = splitAt n p in a ++ x ++ b | n <- [0..(length p - 1)]]) [] (permutations xs)
+permutations = undefined
+-- permutations [] = []
+-- permutations [x] = [[x]]
+-- permutations (x:xs) = foldr (\val acc -> acc ++ perms x val) [] (permutations xs)
+--     where perms x p = [take n p ++ [x] ++ drop n p | n <- [0..(length p)]]
 
 --------------------------------------------------------------------------------
 -- Monoids
@@ -92,18 +95,18 @@ class Monoid a where
     mempty  :: a
     mappend :: a -> a -> a
     mconcat :: [a] -> a
-    mconcat = undefined
+    mconcat = foldr mappend mempty
 
 instance Monoid Int where
-    mempty  = undefined
-    mappend = undefined
+    mempty  = 0
+    mappend = (+)
 
 instance Monoid [a] where
-    mempty  = undefined
-    mappend = undefined
+    mempty  = []
+    mappend = (++)
 
 instance Monoid b => Monoid (a -> b) where
-    mempty  = undefined
+    mempty  = mempty
     mappend = undefined
 
 --------------------------------------------------------------------------------
