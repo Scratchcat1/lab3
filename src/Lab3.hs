@@ -56,7 +56,19 @@ zipWith fn (x:xs) (y:ys) = fn x y : zipWith fn xs ys
 zipWith fn _ _ = []
 
 groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
-groupBy = undefined
+groupBy fn [] = []
+groupBy fn (x:xs) = case length xs of
+    0 -> [[x]]
+    _ -> let groups = groupBy fn xs
+        in 
+            if fn ((groups !! 0) !! 0) x then
+                let (y:ys) = groups
+                in (x : y) : ys
+            else    
+                [x] : groups
+
+
+
 
 subsequences :: [a] -> [[a]]
 subsequences [] = [[]]
