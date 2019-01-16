@@ -22,7 +22,7 @@ elem :: Eq a => a -> [a] -> Bool
 elem n x = not (null (filter (\y -> y == n) x))
 
 maximum :: Ord a => [a] -> a
--- maximum (x:xs) = case length xs of 
+-- maximum (x:xs) = case length xs of
 --     0 -> x
 --     _ -> if maximum xs > x then maximum xs else x
 maximum = foldr1 (\x y -> if x > y then x else y)
@@ -35,7 +35,7 @@ intersperse sep emptyString = emptyString
 
 any :: (a -> Bool) -> [a] -> Bool
 any fn list = not (null (filter fn list))
--- use any where fn = \x -> x == n for elem using any 
+-- use any where fn = \x -> x == n for elem using any
 
 all :: (a -> Bool) -> [a] -> Bool
 all fn list = not (any (\val -> not (fn val)) list)
@@ -45,7 +45,7 @@ flip fn x y = fn y x
 
 takeWhile :: (a -> Bool) -> [a] -> [a]
 takeWhile fn [] = []
-takeWhile fn (x:xs) = 
+takeWhile fn (x:xs) =
     if fn x then
         x : takeWhile fn xs
     else
@@ -59,10 +59,12 @@ groupBy :: (a -> a -> Bool) -> [a] -> [[a]]
 groupBy = undefined
 
 subsequences :: [a] -> [[a]]
-subsequences = undefined
+subsequences [] = [[]]
+subsequences (x:xs) = subsequences xs ++ [x:ys | ys <- subsequences xs]
 
 permutations :: Eq a => [a] -> [[a]]
-permutations = undefined
+permutations [x] = [[x]]
+permutations (x:xs) = foldr (\p -> [let (a,b) = splitAt n p in a ++ x ++ b | n <- [0..(length p - 1)]]) [] (permutations xs)
 
 --------------------------------------------------------------------------------
 -- Monoids
